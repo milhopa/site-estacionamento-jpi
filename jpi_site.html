@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estacionamento JPI - Centro de Pelotas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --primary-color: #f59e0b; /* Âmbar elegante para combinar com as luzes da foto */
+            --primary-hover: #d97706;
+            --dark-bg: #111827;
+            --text-main: #1f2937;
+        }
+
+        html { scroll-behavior: smooth; }
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: #f9fafb; 
+            color: var(--text-main); 
+            overflow-x: hidden; 
+        }
+
+        /* --- ANIMAÇÕES MÁGICAS --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- BARRA DE NAVEGAÇÃO --- */
+        .navbar { 
+            background-color: rgba(255, 255, 255, 0.85); 
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.3); 
+            padding: 15px 0; 
+            transition: all 0.3s ease;
+        }
+        .nav-link { 
+            color: #4b5563 !important; 
+            font-weight: 500; 
+            margin: 0 12px; 
+            transition: color 0.3s ease, transform 0.3s ease; 
+        }
+        .nav-link:hover { 
+            color: var(--primary-color) !important; 
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 991px) {
+            .navbar-collapse { 
+                background: rgba(255, 255, 255, 0.95); 
+                backdrop-filter: blur(10px);
+                padding: 20px; 
+                border-radius: 15px; 
+                box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+                position: absolute; top: 100%; left: 10px; right: 10px; z-index: 1000; 
+            }
+        }
+
+        /* --- 1. INÍCIO (HERO) --- */
+        .hero-section { padding: 80px 0 100px; position: relative; }
+        .hero-image-wrapper { 
+            position: relative; 
+            height: 600px; 
+            border-radius: 2rem; 
+            overflow: hidden; 
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); 
+            border: 1px solid rgba(255,255,255,0.5);
+            transform: perspective(1000px) rotateY(-5deg);
+            transition: transform 0.5s ease;
+        }
+        .hero-image-wrapper:hover {
+            transform: perspective(1000px) rotateY(0deg);
+        }
+        .hero-image { width: 100%; height: 100%; object-fit: cover; }
+        
+        .hero-title { 
+            font-size: 3.8rem; 
+            font-weight: 800; 
+            line-height: 1.1; 
+            letter-spacing: -1px; 
+            color: var(--dark-bg); 
+            margin-bottom: 25px; 
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, var(--primary-color), #f97316);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-subtitle { font-size: 1.15rem; color: #4b5563; line-height: 1.7; margin-bottom: 45px; font-weight: 400; }
+
+        @media (max-width: 991px) {
+            .hero-section { padding: 40px 0; }
+            .hero-image-wrapper { height: 400px; margin-bottom: 40px; transform: none; }
+            .hero-title { font-size: 2.8rem; text-align: center; }
+            .hero-subtitle { font-size: 1rem; text-align: center; }
+            .hero-section .mt-4 { text-align: center; align-items: center; }
+        }
+
+        /* Botões de Serviço (Hero) */
+        .service-btn { 
+            background-color: #ffffff; 
+            border: 1px solid rgba(0,0,0,0.05); 
+            border-radius: 20px; 
+            padding: 18px 24px; 
+            display: flex; align-items: center; justify-content: space-between; 
+            text-decoration: none; color: #333; 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); 
+            cursor: pointer; width: 100%; text-align: left; 
+        }
+        .service-btn:hover { 
+            border-color: var(--primary-color); 
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); 
+            transform: translateY(-5px); 
+        }
+        .service-icon-bg { 
+            background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+            border-radius: 14px; width: 54px; height: 54px; 
+            display: flex; align-items: center; justify-content: center; 
+            margin-right: 18px; flex-shrink: 0; 
+            transition: all 0.3s ease;
+        }
+        .service-btn:hover .service-icon-bg { background: var(--primary-color); color: white !important; }
+        .service-btn:hover .service-icon { color: white !important; }
+        .service-icon { font-size: 1.6rem; color: #4b5563; transition: all 0.3s ease; }
+        .service-title { font-weight: 700; font-size: 1.1rem; margin: 0; color: var(--dark-bg); }
+        .service-desc { font-size: 0.9rem; color: #6b7280; margin: 0; }
+        .service-arrow { color: #9ca3af; font-size: 1.2rem; transition: transform 0.3s ease; }
+        .service-btn:hover .service-arrow { transform: translateX(5px); color: var(--primary-color); }
+
+        /* --- SEÇÕES & CARDS --- */
+        .section-padding { padding: 100px 0; }
+        .bg-gray { background-color: #f3f4f6; }
+        
+        .feature-card {
+            background: #ffffff;
+            border-radius: 1.5rem;
+            padding: 2.5rem 1.5rem;
+            height: 100%;
+            border: 1px solid rgba(0,0,0,0.03);
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+            border-bottom: 4px solid var(--primary-color);
+        }
+
+        .icon-wrapper {
+            width: 70px; height: 70px;
+            background: rgba(245, 158, 11, 0.1);
+            border-radius: 20px;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 1.5rem;
+            transform: rotate(-5deg);
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover .icon-wrapper { transform: rotate(0deg) scale(1.1); background: var(--primary-color); }
+        .feature-card:hover .icon-wrapper i { color: white !important; }
+
+        /* --- MODAIS --- */
+        .modal-content { border-radius: 24px; border: none; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); }
+        .modal-header { border-bottom: 1px solid #f3f4f6; padding: 25px 30px; }
+        .modal-body { padding: 30px; }
+        .form-floating > .form-control:focus ~ label { color: var(--primary-color); }
+        .form-floating > .form-control:focus { border-color: var(--primary-color); box-shadow: 0 0 0 0.25rem rgba(245, 158, 11, 0.25); }
+        .form-floating > .form-control { border-radius: 14px; border: 1px solid #e5e7eb; }
+        
+        .btn-brand { background-color: var(--primary-color); color: white; border: none; }
+        .btn-brand:hover { background-color: var(--primary-hover); color: white; transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(245, 158, 11, 0.3); }
+
+        /* --- FOOTER --- */
+        .footer-links a { color: #9ca3af; text-decoration: none; transition: color 0.2s; font-size: 0.9rem; }
+        .footer-links a:hover { color: #fff; }
+        .footer-divider { color: #4b5563; margin: 0 10px; }
+    </style>
+</head>
+<body>
+
+    <!-- MENU COM ÂNCORAS -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-3" href="#inicio">
+                <img src="jpi.png" alt="Logomarca Estacionamento JPI" height="50" style="filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));">
+                <span class="fw-bold fs-5 d-none d-sm-block" style="color: var(--dark-bg); letter-spacing: -0.5px;">Estacionamento JPI</span>
+            </a>
+            
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#menuSite">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse justify-content-end" id="menuSite">
+                <ul class="navbar-nav mb-2 mb-lg-0 text-center">
+                    <li class="nav-item"><a class="nav-link" href="#inicio">Início</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#sobre">Sobre</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#servicos">Infraestrutura</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contato">Contato</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 1. INÍCIO -->
+    <section id="inicio" class="hero-section">
+        <div class="container">
+            <div class="row align-items-center g-4 g-lg-5">
+                
+                <div class="col-lg-6 order-2 order-lg-1 reveal pe-lg-5">
+                    <h1 class="hero-title">Sua vaga garantida.<br><span class="text-gradient">Sem fila e com praticidade.</span></h1>
+                    <p class="hero-subtitle">
+                        O melhor ponto de Pelotas. Estacionamento rotativo, pernoite e diária de segunda a sexta (8h às 19h) e acesso exclusivo <strong>24 horas</strong> para mensalistas.
+                    </p>
+
+                    <div class="mt-5 d-flex flex-column align-items-lg-start align-items-center">
+                        <h6 class="fw-bold text-muted mb-3 text-uppercase" style="letter-spacing: 2px; font-size: 0.75rem;">Agende Rapidamente</h6>
+                        <div class="d-flex flex-column gap-3 w-100" style="max-width: 450px;">
+                            <button type="button" class="service-btn" data-bs-toggle="modal" data-bs-target="#modalReserva">
+                                <div class="d-flex align-items-center w-100">
+                                    <div class="service-icon-bg"><i class="bi bi-clock-history service-icon"></i></div>
+                                    <div class="flex-grow-1">
+                                        <p class="service-title">Reserva de Vaga</p>
+                                        <p class="service-desc">Garanta seu lugar por hora ou diária</p>
+                                    </div>
+                                    <i class="bi bi-chevron-right service-arrow ms-2"></i>
+                                </div>
+                            </button>
+
+                            <button type="button" class="service-btn" data-bs-toggle="modal" data-bs-target="#modalMensalista">
+                                <div class="d-flex align-items-center w-100">
+                                    <div class="service-icon-bg"><i class="bi bi-calendar2-check service-icon"></i></div>
+                                    <div class="flex-grow-1">
+                                        <p class="service-title">Estacionamento Mensal</p>
+                                        <p class="service-desc">Acesso 24h e cobertura garantida</p>
+                                    </div>
+                                    <i class="bi bi-chevron-right service-arrow ms-2"></i>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 order-1 order-lg-2 reveal">
+                    <div class="hero-image-wrapper">
+                        <img src="jpi_estaciona_frente.webp_2K_20261006213454.jpg" class="hero-image" alt="Fachada Estacionamento JPI">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. SOBRE A EMPRESA -->
+    <section id="sobre" class="section-padding bg-gray">
+        <div class="container">
+            <div class="row align-items-center flex-column-reverse flex-lg-row">
+                <div class="col-lg-7 mb-4 mb-lg-0 pe-lg-5 text-center text-lg-start reveal">
+                    <h6 class="text-warning fw-bold text-uppercase mb-2" style="letter-spacing: 2px; font-size: 0.85rem;">Tradição e Confiança</h6>
+                    <h2 class="fw-bold mb-4" style="color: var(--dark-bg); font-size: 2.5rem;">Nossa História</h2>
+                    <p class="text-muted" style="font-size: 1.1rem; line-height: 1.8;">
+                        A trajetória do <strong>Estacionamento JPI</strong> é marcada por resiliência e adaptação. Comecei a minha caminhada neste segmento em 2012, trabalhando e conhecendo o negócio de perto como funcionário. No ano de 2020, em meio aos desafios impostos pela pandemia, assumimos a direção e adaptamos toda a estrutura para o cenário exigente daquele momento.
+                    </p>
+                    <p class="text-muted" style="font-size: 1.1rem; line-height: 1.8;">
+                        Hoje, seguimos firmes e consolidados no mercado para atender o público exigente que procura um local seguro para guardar o seu veículo e deslocar-se tranquilamente pela Avenida Bento Gonçalves, Catedral, Centro Histórico, além dos diversos escritórios que compõem a nossa vizinhança.
+                    </p>
+                </div>
+                <div class="col-lg-5 text-center mb-5 mb-lg-0 reveal">
+                    <div class="p-5 bg-white rounded-circle shadow-lg d-inline-block position-relative" style="border: 8px solid #f9fafb;">
+                        <img src="jpi.png" alt="Sobre o JPI" style="max-width: 180px; width: 100%;">
+                        <!-- Elemento decorativo -->
+                        <div class="position-absolute top-0 start-0 w-100 h-100 rounded-circle border border-warning" style="transform: scale(1.1); opacity: 0.3; z-index: -1;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. SERVIÇOS / PRODUTOS -->
+    <section id="servicos" class="section-padding bg-white">
+        <div class="container">
+            <div class="text-center mb-5 reveal">
+                <h6 class="text-warning fw-bold text-uppercase mb-2" style="letter-spacing: 2px; font-size: 0.85rem;">Nossos Diferenciais</h6>
+                <h2 class="fw-bold" style="color: var(--dark-bg); font-size: 2.5rem;">Infraestrutura e Segurança</h2>
+                <p class="text-muted fs-5 mt-3 max-w-2xl mx-auto">Um espaço pensado em todos os detalhes para proteger o seu patrimônio com o máximo de conforto.</p>
+            </div>
+            
+            <div class="row g-4 mt-4">
+                <div class="col-md-6 col-lg-3 reveal" style="transition-delay: 100ms;">
+                    <div class="feature-card text-center">
+                        <div class="icon-wrapper">
+                            <i class="bi bi-car-front-fill fs-2 text-warning"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">100% Coberto</h5>
+                        <p class="text-muted small mb-0">Vagas amplas com proteção total de laje, garantindo o abrigo perfeito contra sol e chuva para o seu carro.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3 reveal" style="transition-delay: 200ms;">
+                    <div class="feature-card text-center">
+                        <div class="icon-wrapper">
+                            <i class="bi bi-clock-fill fs-2 text-warning"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Acesso 24 Horas</h5>
+                        <p class="text-muted small mb-0">Clientes mensalistas contam com liberdade total de entrada e saída 24 horas por dia, com autonomia garantida.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3 reveal" style="transition-delay: 300ms;">
+                    <div class="feature-card text-center">
+                        <div class="icon-wrapper">
+                            <i class="bi bi-camera-video-fill fs-2 text-warning"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Segurança Total</h5>
+                        <p class="text-muted small mb-0">Ambiente vigiado por câmeras de segurança de alta definição e alarme, proporcionando total tranquilidade.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3 reveal" style="transition-delay: 400ms;">
+                    <div class="feature-card text-center">
+                        <div class="icon-wrapper">
+                            <i class="bi bi-laptop fs-2 text-warning"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Reserva Online</h5>
+                        <p class="text-muted small mb-0">Agende a sua vaga rotativa ou diária pelo site, recebendo confirmação rápida diretamente no seu WhatsApp.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. CONTATO E MAPA -->
+    <section id="contato" class="section-padding bg-gray">
+        <div class="container">
+            <div class="row g-5 align-items-center">
+                <div class="col-lg-5 text-center text-lg-start reveal">
+                    <h2 class="fw-bold mb-4" style="color: var(--dark-bg); font-size: 2.5rem;">Venha conhecer</h2>
+                    <p class="text-muted fs-5 mb-5">Estamos localizados numa área estratégica de Pelotas. Tem dúvidas? Entre em contato conosco diretamente pelo WhatsApp.</p>
+                    
+                    <div class="d-flex flex-column flex-md-row align-items-center align-items-md-start justify-content-center justify-content-lg-start mb-4 text-center text-md-start gap-4">
+                        <div class="bg-white text-dark shadow-sm p-3 rounded-4" style="border: 1px solid #e5e7eb;">
+                            <i class="bi bi-geo-alt-fill fs-3 text-warning"></i>
+                        </div>
+                        <div class="mt-2 mt-md-0">
+                            <h6 class="fw-bold mb-1 fs-5">Endereço</h6>
+                            <span class="text-muted">Centro Histórico, Pelotas - RS</span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-column flex-md-row align-items-center align-items-md-start justify-content-center justify-content-lg-start mb-5 text-center text-md-start gap-4">
+                        <div class="bg-white text-success shadow-sm p-3 rounded-4" style="border: 1px solid #e5e7eb;">
+                            <i class="bi bi-whatsapp fs-3"></i>
+                        </div>
+                        <div class="mt-2 mt-md-0">
+                            <h6 class="fw-bold mb-1 fs-5">Atendimento Online</h6>
+                            <span class="text-muted fs-5">(53) 98433-7336</span>
+                        </div>
+                    </div>
+
+                    <a href="https://wa.me/5553984337336" target="_blank" class="btn btn-success fw-bold py-3 px-5 rounded-pill shadow-lg w-100 fs-5 d-flex align-items-center justify-content-center gap-2" style="transition: transform 0.3s ease;">
+                        <i class="bi bi-whatsapp"></i> Iniciar Conversa
+                    </a>
+                </div>
+
+                <div class="col-lg-7 mt-5 mt-lg-0 reveal" style="transition-delay: 200ms;">
+                    <div class="rounded-4 overflow-hidden shadow-lg border border-white" style="height: 450px;">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3393.3639017770857!2d-52.34112852438676!3d-31.7643566741258!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9511b5c9f00caca3%3A0x3791644e1a5ff614!2sEstacionamento%20JPI!5e0!3m2!1spt-BR!2sbr!4v1714578152345!5m2!1spt-BR!2sbr" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MODAL DE RESERVA -->
+    <div class="modal fade" id="modalReserva" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold fs-4">Reservar Vaga</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formReserva">
+                        <div class="form-floating mb-3">
+                            <input type="text" id="resNome" class="form-control" placeholder="Nome" required>
+                            <label>Nome Completo</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" id="resPlaca" class="form-control" placeholder="Placa" required>
+                            <label>Placa do Veículo</label>
+                        </div>
+                        <div class="row g-3 mb-4">
+                            <div class="col-12 col-sm-6">
+                                <div class="form-floating">
+                                    <input type="date" id="resData" class="form-control" required>
+                                    <label>Data Chegada</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <div class="form-floating">
+                                    <input type="time" id="resHora" class="form-control" required>
+                                    <label>Hora Prevista</label>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-brand w-100 py-3 rounded-pill fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2" onclick="enviarWhatsAppReserva()">
+                            Confirmar no WhatsApp <i class="bi bi-whatsapp"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE MENSALISTA -->
+    <div class="modal fade" id="modalMensalista" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold fs-4">Orçamento Mensalista</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formMensalista">
+                        <div class="form-floating mb-3">
+                            <input type="text" id="menNome" class="form-control" placeholder="Nome" required>
+                            <label>Nome Completo</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" id="menPlaca" class="form-control" placeholder="Placa" required>
+                            <label>Placa / Veículo</label>
+                        </div>
+                        <div class="form-floating mb-4">
+                            <input type="email" id="menEmail" class="form-control" placeholder="Email">
+                            <label>E-mail (Opcional)</label>
+                        </div>
+                        <button type="button" class="btn btn-dark w-100 py-3 rounded-pill fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2" onclick="enviarWhatsAppMensalista()">
+                            Solicitar Orçamento <i class="bi bi-whatsapp"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER COM POLÍTICAS (ADSENSE READY) -->
+    <footer class="text-white py-5 mt-auto" style="background-color: var(--dark-bg);">
+        <div class="container text-center">
+            <div class="mb-4 d-flex justify-content-center align-items-center gap-3 footer-links flex-wrap">
+                <a href="#">Política de Privacidade</a>
+                <span class="footer-divider">|</span>
+                <a href="#">Termos de Uso</a>
+                <span class="footer-divider">|</span>
+                <a href="#">Política de Cookies</a>
+            </div>
+            <div class="text-secondary small fw-medium" style="opacity: 0.8;">
+                <p class="mb-1">Estacionamento JPI Ltda - CNPJ 53.529.961/0001-54</p>
+                <p class="mb-0">&copy; 2026. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Animação de entrada mágica (Scroll Reveal)
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        reveal(); // Call once to show elements already in view
+
+        // Lógica de Formulários e Integração Futura n8n
+        const numeroWhatsApp = "5553984337336";
+
+        function enviarWhatsAppReserva() {
+            let nome = document.getElementById('resNome').value;
+            let placa = document.getElementById('resPlaca').value;
+            let data = document.getElementById('resData').value;
+            let hora = document.getElementById('resHora').value;
+
+            if(!nome || !placa || !data || !hora) {
+                alert("Por favor, preencha todos os campos obrigatórios.");
+                return;
+            }
+
+            // TODO: Integrar webhook do n8n aqui (Exemplo futuro)
+            /*
+            fetch('SUA_URL_DO_WEBHOOK_N8N_AQUI', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ tipo: 'reserva', nome, placa, data, hora })
+            }).then(response => console.log('Enviado pro n8n', response))
+              .catch(error => console.error('Erro n8n:', error));
+            */
+
+            let dataFormatada = data.split('-').reverse().join('/');
+            let mensagem = `*NOVA RESERVA DE VAGA* 🚗\n\n*Nome:* ${nome}\n*Veículo/Placa:* ${placa}\n*Data de Chegada:* ${dataFormatada}\n*Hora Prevista:* ${hora}\n\nOlá! Gostaria de confirmar a disponibilidade desta reserva.`;
+            
+            let url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
+            window.open(url, '_blank');
+        }
+
+        function enviarWhatsAppMensalista() {
+            let nome = document.getElementById('menNome').value;
+            let placa = document.getElementById('menPlaca').value;
+            let email = document.getElementById('menEmail').value;
+
+            if(!nome || !placa) {
+                alert("Por favor, preencha o Nome e a Placa.");
+                return;
+            }
+
+            // TODO: Integrar webhook do n8n aqui (Exemplo futuro)
+            /*
+            fetch('SUA_URL_DO_WEBHOOK_N8N_AQUI', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ tipo: 'mensalista', nome, placa, email })
+            }).then(response => console.log('Enviado pro n8n', response))
+              .catch(error => console.error('Erro n8n:', error));
+            */
+
+            let mensagem = `*ORÇAMENTO MENSALISTA* 📅\n\n*Nome:* ${nome}\n*Veículo/Placa:* ${placa}\n*E-mail:* ${email || 'Não informado'}\n\nOlá! Gostaria de saber os valores e disponibilidade para me tornar um cliente mensalista.`;
+            
+            let url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+</html>
